@@ -1,0 +1,6 @@
+// Hint files help the Visual Studio IDE interpret Visual C++ identifiers
+// such as names of functions and macros.
+// For more information see https://go.microsoft.com/fwlink/?linkid=865984
+#define EVENT_CLASS_TYPE(type) virtual EventType GetEventType() const { return EventType::type; } virtual const char* GetName() const { return #type; }
+
+#define DEV_ASSERT(x, ...) if (!(x)) { LOG_FATAL("Assertion Failed! "##__VA_ARGS__); abort(); } 

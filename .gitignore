@@ -1,3 +1,6 @@
+# Visual Studio
+**/.vs
+
 # Prerequisites
 *.d
 
@@ -14,26 +17,6 @@
 # Linker files
 *.ilk
 
-# Debugger Files
-*.pdb
-
-# Compiled Dynamic libraries
-*.so
-*.dylib
-*.dll
-*.so.*
-
-
-# Fortran module files
-*.mod
-*.smod
-
-# Compiled Static libraries
-*.lai
-*.la
-*.a
-*.lib
-
 # Executables
 *.exe
 *.out
@@ -41,6 +24,7 @@
 
 # Build directories
 build/
+int/
 Build/
 build-*/
 
