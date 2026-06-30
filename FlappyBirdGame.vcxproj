@@ -88,6 +88,7 @@
   <ItemGroup>
     <ClCompile Include="src\app\events.cpp" />
     <ClCompile Include="src\app\application.cpp" />
+    <ClCompile Include="src\app\keys.cpp" />
     <ClCompile Include="src\Log.cpp" />
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\scenes\scene.cpp" />
@@ -98,6 +99,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\app\app_builder.hpp" />
+    <ClInclude Include="src\app\keys.hpp" />
     <ClInclude Include="src\core\defines.hpp" />
     <ClInclude Include="src\error\assertions.hpp" />
     <ClInclude Include="src\app\events.hpp" />

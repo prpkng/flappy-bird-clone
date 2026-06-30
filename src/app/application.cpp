@@ -53,6 +53,13 @@ void Application::main_loop()
 
 void Application::on_event(Event& ev)
 {
+	switch (ev.GetEventType()) {
+	case EventType::KeyPress:
+		KeyPressedEvent& e = dynamic_cast<KeyPressedEvent&>(ev);
+		LOG_INFO("Event info: {0}", e.ToString());
+		
+		break;
+	}
 }
 
 void Application::shutdown() {

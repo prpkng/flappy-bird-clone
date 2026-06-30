@@ -39,13 +39,13 @@ void Window::update()
 		}
 		case SDL_EVENT_KEY_DOWN:
 		{
-			auto event = KeyPressedEvent(e.key.key, 0); // TODO implement repeatCount
+			auto event = KeyPressedEvent(PhysicalKey::from_sdl(e.key.scancode), 0); // TODO implement repeatCount
 			eventCallbackFn(event);
 			break;
 		}
 		case SDL_EVENT_KEY_UP:
 		{
-			auto event = KeyReleasedEvent(e.key.key);
+			auto event = KeyReleasedEvent(PhysicalKey::from_sdl(e.key.scancode));
 			eventCallbackFn(event);
 			break;
 		}

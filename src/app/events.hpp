@@ -1,5 +1,7 @@
 #pragma once
 
+#include "app/keys.hpp"
+
 #include <string>
 
 enum class EventType {
@@ -45,18 +47,18 @@ private:
 
 class KeyEvent : public Event {
 public:
-    inline unsigned int GetKeyCode() const { return keyCode; }
+    inline PhysicalKeyCode GetKeyCode() const { return keyCode; }
 
-    KeyEvent(unsigned int keycode)
+    KeyEvent(PhysicalKeyCode keycode)
         : keyCode(keycode) {
     }
 
-    unsigned int keyCode;
+    PhysicalKeyCode keyCode;
 };
 
 class KeyPressedEvent : public KeyEvent {
 public:
-    KeyPressedEvent(int keyCode, int repeatCount) : KeyEvent(keyCode), repeatCount(repeatCount) {}
+    KeyPressedEvent(PhysicalKeyCode keyCode, int repeatCount) : KeyEvent(keyCode), repeatCount(repeatCount) {}
 
     inline int GetRepeatCount() const { return repeatCount; }
 
@@ -69,7 +71,7 @@ private:
 
 class KeyReleasedEvent : public KeyEvent {
 public:
-    KeyReleasedEvent(int keyCode) : KeyEvent(keyCode) {}
+    KeyReleasedEvent(PhysicalKeyCode keyCode) : KeyEvent(keyCode) {}
 
     std::string ToString() const override;
     EVENT_CLASS_TYPE(KeyRelease)

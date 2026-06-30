@@ -1,5 +1,6 @@
 #include "events.hpp"
 #include <format>
+#include <magic_enum/magic_enum.hpp>
 
 WindowResizeEvent::WindowResizeEvent(unsigned int width, unsigned int height) : width(width), height(height) {}
 
@@ -10,12 +11,12 @@ std::string WindowResizeEvent::ToString() const
 
 std::string KeyPressedEvent::ToString() const
 {
-	return std::format("KeyPressedEvent: {0} ({1} repeats)", keyCode, repeatCount);
+	return std::format("KeyPressedEvent: {0} [{1}] ({2} repeats)", PhysicalKey::to_string(keyCode), (int)keyCode, repeatCount);
 }
 
 std::string KeyReleasedEvent::ToString() const
 {
-	return std::format("KeyReleasedEvent: {0}", keyCode);
+	return std::format("KeyReleasedEvent: {0} [{1}]", PhysicalKey::to_string(keyCode), (int)keyCode);
 }
 
 std::string MouseMovedEvent::ToString() const
