@@ -1,7 +1,7 @@
 #include "app/application.hpp"
 #include "math/vector2.hpp"
 
-#include "TestScene.hpp"
+#include "Testscene.hpp"
 #include <SDL3/SDL.h>
 
 SDL_Color SDL_HSVToRGB(float h, float s, float v) {
@@ -80,7 +80,7 @@ void TestScene::update(float delta)
 
 void TestScene::render(float delta)
 {
-	auto renderer = application->GetRenderer();
+	auto renderer = application->get_renderer();
 	SDL_SetRenderDrawColor(renderer, 255, 150, 150, 255);
 	SDL_RenderClear(renderer);
 

@@ -1,5 +1,5 @@
 #pragma once
-#include "Scene.hpp"
+#include "scenes/scene.hpp"
 #include <unordered_map>
 #include <memory>
 
@@ -15,7 +15,7 @@ class SceneStager
 public:
 	SceneStager(Application* application) : application(application) {}
 
-	void add_scene(GameStage stage, Scene* scene);
+	void add_scene(GameStage stage, std::unique_ptr<Scene> scene);
 
 	void change_scene(GameStage next);
 

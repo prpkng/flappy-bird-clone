@@ -1,12 +1,12 @@
-#include "SceneStager.hpp"
+#include "scene_stager.hpp"
 
-void SceneStager::add_scene(GameStage stage, Scene* scene) {
+void SceneStager::add_scene(GameStage stage, std::unique_ptr<Scene> scene) {
 	if (scenes.contains(stage)) {
 		throw std::exception("stage already exists!");
 	}
 	if (scenes.size() == 0) current_stage = stage;
 	scene->application = application;
-	scenes[stage] = std::unique_ptr<Scene>(scene);
+	scenes[stage] = std::move(scene);
 	get_current_scene()->OnEnter();
 }
 

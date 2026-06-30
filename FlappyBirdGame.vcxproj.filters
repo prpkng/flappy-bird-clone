@@ -30,10 +30,10 @@
     <ClCompile Include="src\app\events.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\Scene.cpp">
+    <ClCompile Include="src\scenes\scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\SceneStager.cpp">
+    <ClCompile Include="src\scenes\scene_stager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\TestScene.cpp">
@@ -56,10 +56,10 @@
     <ClInclude Include="src\app\events.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\Scene.hpp">
+    <ClInclude Include="src\scenes\scene.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\SceneStager.hpp">
+    <ClInclude Include="src\scenes\scene_stager.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\TestScene.hpp">
@@ -81,6 +81,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\math\math.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\app\app_builder.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

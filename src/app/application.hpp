@@ -1,9 +1,11 @@
 #pragma once
 
-#include "window.hpp"
-#include "SceneStager.hpp"
+#include "app/window.hpp"
+#include "scenes/scene_stager.hpp"
+
 #include <memory>
 
+struct AppConfig;
 struct SDL_Renderer;
 
 class Application
@@ -12,18 +14,19 @@ public:
 	Application();
 	~Application();
 
-	void Initialize();
+	void initialize(const AppConfig& config);
 
-	void Tick();
-	void MainLoop();
-	void OnEvent(Event& ev);
+	void tick();
+	void main_loop();
+	void on_event(Event& ev);
 	
-	void Shutdown();
+	void shutdown();
 
-	SDL_Renderer* GetRenderer() const { return renderer; }
-
+	[[nodiscard]] SDL_Renderer* get_renderer() const { return renderer; }
+	[[nodiscard]] std::unique_ptr<Window>& get_window() { return window; }
+	[[nodiscard]] SceneStager& get_stager() { return scene_stager; }
 private:
-	SceneStager sceneStager;
+	SceneStager scene_stager;
 	std::unique_ptr<Window> window;
 
 	SDL_Renderer* renderer;

@@ -1,5 +1,5 @@
 #pragma once
-#include "Scene.hpp"
+#include "scenes/scene.hpp"
 
 #include <entt/entt.hpp>
 

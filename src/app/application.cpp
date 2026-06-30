@@ -1,9 +1,13 @@
-#include "application.hpp"
-#include "TestScene.hpp"
-#include <SDL3/SDL.h>
+#include "app/application.hpp"
+#include "app/app_builder.hpp"
+
+#include "Testscene.hpp"
 #include "Log.hpp"
 
-Application::Application() : sceneStager(this)
+
+#include <SDL3/SDL.h>
+
+Application::Application() : scene_stager(this)
 {
 }
 
@@ -11,23 +15,18 @@ Application::~Application()
 {
 }
 
-void Application::Initialize()
+void Application::initialize(const AppConfig& config)
 {
 	LOG_INFO("Initializing logger...");
 
-	window = std::make_unique<Window>(1280, 720, "Test Window");
-	window->SetEventCallback([this](Event& ev) { OnEvent(ev); });
-
-	sceneStager.add_scene(GameStage::Game, new TestScene());
+	window = std::make_unique<Window>(config.width, config.height, config.title);
+	window->SetEventCallback([this](Event& ev) { on_event(ev); });
 
 	renderer = SDL_CreateRenderer(window->GetHandle(), NULL);
 	SDL_SetRenderVSync(renderer, 0);
-	
-
-	MainLoop();
 }
 
-void Application::Tick() {
+void Application::tick() {
 	window->update();
 
 	static uint64_t lastTicks = 0;
@@ -37,25 +36,25 @@ void Application::Tick() {
 	//TODO improved timing class
 
 
-	sceneStager.update(delta);
+	scene_stager.update(delta);
 
-	sceneStager.render(delta);
+	scene_stager.render(delta);
 
 
 	SDL_RenderPresent(renderer);
 }
 
-void Application::MainLoop()
+void Application::main_loop()
 {
 	while (!window->ShouldClose()) {
-		Tick();
+		tick();
 	}
 }
 
-void Application::OnEvent(Event& ev)
+void Application::on_event(Event& ev)
 {
 }
 
-void Application::Shutdown() {
+void Application::shutdown() {
 	SDL_DestroyRenderer(renderer);
 }
