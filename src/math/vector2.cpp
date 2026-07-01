@@ -46,7 +46,7 @@ Vector2 Vector2::limit_length(float max_len) const
 {
     const float l = length();
     Vector2 v = *this;
-    if (l > 0 && max_len < 1) {
+    if (l > 0 && max_len < l) {
         v /= l;
         v *= max_len;
     }
@@ -74,6 +74,53 @@ bool Vector2::is_finite() const
 {
     return Math::is_finite(x) && Math::is_finite(y);
 }
+
+
+
+
+Vector2 Vector2::sign() const {
+    return Vector2(SIGN(x), SIGN(y));
+}
+
+Vector2 Vector2::floor() const {
+    return Vector2(Math::floorf(x), Math::floorf(y));
+}
+
+Vector2 Vector2::ceil() const {
+    return Vector2(Math::ceilf(x), Math::ceilf(y));
+}
+
+Vector2 Vector2::round() const {
+    return Vector2(Math::roundf(x), Math::roundf(y));
+}
+
+Vector2 Vector2::snapped(const Vector2& by) const {
+    return Vector2(Math::snapped(x, by.x), Math::snapped(y, by.y));
+}
+
+Vector2 Vector2::snappedf(float by) const {
+    return Vector2(Math::snapped(x, by), Math::snapped(y, by));
+}
+
+Vector2 Vector2::clamp(const Vector2& min, const Vector2& max) const {
+    return Vector2(
+        CLAMP(x, min.x, max.x),
+        CLAMP(y, min.y, max.y)
+    );
+}
+
+Vector2 Vector2::clampf(float min, float max) const {
+    return Vector2(
+        CLAMP(x, min, max),
+        CLAMP(y, min, max)
+    );
+    
+}
+
+
+
+
+#pragma region === Operators ===
 
 constexpr Vector2 Vector2::operator+(const Vector2& v) const
 {
@@ -135,3 +182,4 @@ constexpr bool Vector2::operator!=(const Vector2& v) const
     return x != v.x || y != v.y;
 }
 
+#pragma endregion

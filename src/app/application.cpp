@@ -4,8 +4,8 @@
 #include "Testscene.hpp"
 #include "Log.hpp"
 
-
 #include <SDL3/SDL.h>
+
 
 Application::Application() : scene_stager(this)
 {

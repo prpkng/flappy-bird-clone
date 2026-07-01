@@ -1,7 +1,7 @@
 #pragma once
 #include "scenes/scene.hpp"
 #include "ecs/systems/render_system.hpp"
-
+#include "ecs/systems/physics_system.hpp"
 #include <entt/entt.hpp>
 
 class TestScene : public Scene
@@ -18,5 +18,6 @@ private:
 	entt::dispatcher dispatcher;
 
 	RenderSystem render_system;
+	PhysicsSystem physics_system;
 };
 

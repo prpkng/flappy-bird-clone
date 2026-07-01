@@ -81,6 +81,7 @@ void TestScene::enter()
 
 void TestScene::update(float delta)
 {
+    physics_system.update(delta, registry);
 }
 
 void TestScene::render(float delta)

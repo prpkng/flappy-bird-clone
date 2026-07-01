@@ -5,15 +5,13 @@
 
 struct [[nodiscard]] Vector2
 {
+	static const Vector2 ONE;
+	static const Vector2 ZERO;
 	static const Vector2 LEFT;
 	static const Vector2 RIGHT;
 	static const Vector2 UP;
 	static const Vector2 DOWN;
-	static const Vector2 ONE;
-	static const Vector2 ZERO;
 
-	static constexpr int AXIS_COUNT = 2;
-	
 	constexpr Vector2() : x(0), y(0) { }
 	constexpr Vector2(float x, float y) : x(x), y(y) { }
 
@@ -63,23 +61,36 @@ struct [[nodiscard]] Vector2
 	float length_squared() const;
 	Vector2 limit_length(float max_len = 1.0) const;
 
-	void zero() { x = y = 0.0f; }
+	inline void zero() { x = y = 0.0f; }
 
-	Vector2 min(const Vector2& vec2) const {
+	inline Vector2 min(const Vector2& vec2) const {
 		return Vector2(MIN(x, vec2.x), MIN(y, vec2.y));
 	}
 
-	Vector2 max(const Vector2& vec2) const {
+	inline Vector2 max(const Vector2& vec2) const {
 		return Vector2(MAX(x, vec2.x), MAX(y, vec2.y));
 	}
 
-	Vector2 min(float scalar) const {
+	inline Vector2 minf(float scalar) const {
 		return Vector2(MIN(x, scalar), MIN(y, scalar));
 	}
 
-	Vector2 max(float scalar) const {
+	inline Vector2 maxf(float scalar) const {
 		return Vector2(MAX(x, scalar), MAX(y, scalar));
 	}
+
+	inline Vector2 abs() const { return Vector2(Math::abs(x), Math::abs(y)); }
+
+	Vector2 sign() const;
+	Vector2 floor() const;
+	Vector2 ceil() const;
+	Vector2 round() const;
+	Vector2 snapped(const Vector2 & by) const;
+	Vector2 snappedf(float by) const;
+	Vector2 clamp(const Vector2 & min, const Vector2 & max) const;
+	Vector2 clampf(float min, float max) const;
+
+	float aspect() const { return width / height; }
 
 	// float distance_to(const Vector2& point) const;
 	// float distance_squared_to(const Vector2& point) const;

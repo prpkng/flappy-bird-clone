@@ -34,7 +34,7 @@ constexpr auto MAX(const T1 a, const T2 b) {
 }
 
 template <typename T1, typename T2, typename T3>
-constexpr auto MAX(const T1 a, const T2 min, const T3 max) {
+constexpr auto CLAMP(const T1 a, const T2 min, const T3 max) {
 	return a < min ? min : (a > max ? max : a);
 }
 

@@ -24,3 +24,10 @@ inline constexpr float NaN = std::numeric_limits<float>::quiet_NaN();
 #define CMP_EPSILON2 (CMP_EPSILON * CMP_EPSILON)
 
 #define UNIT_EPSILON 0.001
+
+enum class Side {
+	Left,
+	Right,
+	Top,
+	Bottom
+};
