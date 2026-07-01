@@ -27,7 +27,7 @@
     <ClCompile Include="src\app\window.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\app\events.cpp">
+    <ClCompile Include="src\app\window_events.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\scenes\scene.cpp">
@@ -48,6 +48,9 @@
     <ClCompile Include="src\app\keys.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\ecs\systems\render_system.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\app\application.hpp">
@@ -56,7 +59,7 @@
     <ClInclude Include="src\app\window.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\app\events.hpp">
+    <ClInclude Include="src\app\window_events.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\scenes\scene.hpp">
@@ -90,6 +93,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\app\keys.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ecs\events\key_events.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ecs\systems\render_system.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ecs\components\transform.hpp">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\ecs\components\sprite.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -53,7 +53,7 @@ void Application::main_loop()
 
 void Application::on_event(const WindowEvent& ev)
 {
-	LOG_INFO("Event info: {0}", ev.to_string());
+	scene_stager.on_event(ev);
 }
 
 void Application::shutdown() {

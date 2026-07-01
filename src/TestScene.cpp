@@ -1,7 +1,11 @@
 #include "app/application.hpp"
 #include "math/vector2.hpp"
 
-#include "Testscene.hpp"
+#include "ecs/events/key_events.hpp"
+#include "ecs/components/transform.hpp"
+#include "ecs/components/sprite.hpp"
+
+#include "TestScene.hpp"
 #include <SDL3/SDL.h>
 
 SDL_Color SDL_HSVToRGB(float h, float s, float v) {
@@ -49,11 +53,6 @@ struct color {
 	Uint8 r, g, b, a;
 };
 
-struct transform {
-	Vector2 position;
-	Vector2 scale;
-    float rotation;
-};
 
 struct velocity {
 	float dx;
@@ -61,16 +60,22 @@ struct velocity {
 };
 
 
-void TestScene::OnEnter()
+void TestScene::enter()
 {
-	registry = new entt::registry();
+	registry.clear();
+
+    auto surface = SDL_LoadPNG("assets/bird1.png");
+    auto texture = SDL_CreateTextureFromSurface(application->get_renderer(), surface);
+
+    SDL_DestroySurface(surface);
 
 	for (auto i = 0; i < 100; ++i) {
-		const auto entity = registry->create();
+		const auto entity = registry.create();
         Vector2 pos((i % 10) * 40.0f, SDL_floorf(i / 10.f) * 40.0f);
-		registry->emplace<transform>(entity, pos, Vector2::ONE, 0.0f);
-        auto clr = SDL_HSVToRGB(i * 2.55f, 1.f, 1.f);
-		registry->emplace<color>(entity, clr.r, clr.g, clr.b, clr.a);
+		registry.emplace<Transform>(entity, pos, Vector2::ONE, 0.0f);
+        //auto clr = SDL_HSVToRGB(i * 2.55f, 1.f, 1.f);
+		//registry.emplace<color>(entity, clr.r, clr.g, clr.b, clr.a);
+        registry.emplace<Sprite>(entity, texture);
 	}
 }
 
@@ -84,16 +89,23 @@ void TestScene::render(float delta)
 	SDL_SetRenderDrawColor(renderer, 255, 150, 150, 255);
 	SDL_RenderClear(renderer);
 
-	auto view = registry->view<const transform, const color>();
-    view.each([renderer](const transform& trans, const color& color) {
-		SDL_SetRenderDrawColor(renderer, color.r, color.g, color.b, color.a);
-        SDL_FRect rect {trans.position.x, trans.position.y, 40, 40};
-        SDL_RenderFillRect(renderer, &rect);
-	});
+    render_system.render(renderer, registry);
 }
 
-void TestScene::OnExit()
+void TestScene::on_event(const WindowEvent& event)
 {
-	registry->clear();
-	delete registry;
+    switch (event.type) {
+    case EventType::KeyPress: 
+        dispatcher.trigger(KeyDownEvent { event.key.physical_code, event.key.key_code });
+        break;
+    case EventType::KeyRelease: 
+        dispatcher.trigger(KeyUpEvent { event.key.physical_code, event.key.key_code });
+        break;
+    
+    }
+}
+
+void TestScene::exit()
+{
+	registry.clear();
 }

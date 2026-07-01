@@ -47,10 +47,16 @@
     <IncludePath>$(SolutionDir)vendor\include;$(IncludePath)</IncludePath>
     <OutDir>$(SolutionDir)build\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>int\$(Platform)\$(Configuration)\</IntDir>
+    <CustomBuildAfterTargets>
+    </CustomBuildAfterTargets>
+    <CustomBuildBeforeTargets>Run</CustomBuildBeforeTargets>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>$(SolutionDir)build\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>int\$(Platform)\$(Configuration)\</IntDir>
+    <CustomBuildAfterTargets>
+    </CustomBuildAfterTargets>
+    <CustomBuildBeforeTargets>Run</CustomBuildBeforeTargets>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
@@ -67,6 +73,20 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <AdditionalDependencies>$(SolutionDir)vendor\lib\x64\SDL3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
+    <CustomBuildStep>
+      <Command>
+      </Command>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Message>
+      </Message>
+    </CustomBuildStep>
+    <PostBuildEvent>
+      <Command>pwsh.exe $(SolutionDir)scripts\copy_assets.ps1 -Source $(SolutionDir)assets -Destination $(OutDir)assets</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Copying assets to destination</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
@@ -84,9 +104,24 @@
       <SubSystem>Console</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
     </Link>
+    <CustomBuildStep>
+      <Command>
+      </Command>
+    </CustomBuildStep>
+    <CustomBuildStep>
+      <Message>
+      </Message>
+    </CustomBuildStep>
+    <PostBuildEvent>
+      <Command>pwsh.exe $(SolutionDir)scripts\copy_assets.ps1 -Source $(SolutionDir)assets -Destination $(OutDir)assets</Command>
+    </PostBuildEvent>
+    <PostBuildEvent>
+      <Message>Copying assets to destination</Message>
+    </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\app\events.cpp" />
+    <ClCompile Include="src\ecs\systems\render_system.cpp" />
+    <ClCompile Include="src\app\window_events.cpp" />
     <ClCompile Include="src\app\application.cpp" />
     <ClCompile Include="src\app\keys.cpp" />
     <ClCompile Include="src\Log.cpp" />
@@ -98,11 +133,15 @@
     <ClCompile Include="src\math\vector2.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\ecs\components\sprite.hpp" />
+    <ClInclude Include="src\ecs\components\transform.hpp" />
+    <ClInclude Include="src\ecs\systems\render_system.hpp" />
     <ClInclude Include="src\app\app_builder.hpp" />
     <ClInclude Include="src\app\keys.hpp" />
     <ClInclude Include="src\core\defines.hpp" />
+    <ClInclude Include="src\ecs\events\key_events.hpp" />
     <ClInclude Include="src\error\assertions.hpp" />
-    <ClInclude Include="src\app\events.hpp" />
+    <ClInclude Include="src\app\window_events.hpp" />
     <ClInclude Include="src\app\application.hpp" />
     <ClInclude Include="src\Log.hpp" />
     <ClInclude Include="src\math\math.hpp" />

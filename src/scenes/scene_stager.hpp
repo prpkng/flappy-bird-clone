@@ -9,6 +9,7 @@ enum class GameStage {
 };
 
 class Application;
+struct WindowEvent;
 
 class SceneStager
 {
@@ -19,6 +20,7 @@ public:
 
 	void change_scene(GameStage next);
 
+	void on_event(const WindowEvent& wnd_event);
 	void update(float delta);
 	void render(float delta);
 
