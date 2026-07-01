@@ -626,7 +626,7 @@ namespace Key {
         RHyper = SDLK_RHYPER,
     };
 
-    __forceinline static Code key_code_from_sdl(SDL_Keycode sdl_keycode) {
+    __forceinline static Code from_sdl(SDL_Keycode sdl_keycode) {
         return static_cast<Code>(sdl_keycode);
     }
 

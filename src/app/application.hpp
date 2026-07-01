@@ -18,7 +18,7 @@ public:
 
 	void tick();
 	void main_loop();
-	void on_event(Event& ev);
+	void on_event(const WindowEvent& ev);
 	
 	void shutdown();
 

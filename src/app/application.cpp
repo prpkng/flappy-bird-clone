@@ -20,9 +20,9 @@ void Application::initialize(const AppConfig& config)
 	LOG_INFO("Initializing logger...");
 
 	window = std::make_unique<Window>(config.width, config.height, config.title);
-	window->SetEventCallback([this](Event& ev) { on_event(ev); });
+	window->set_event_callback([this](const WindowEvent& ev) { on_event(ev); });
 
-	renderer = SDL_CreateRenderer(window->GetHandle(), NULL);
+	renderer = SDL_CreateRenderer(window->get_handle(), NULL);
 	SDL_SetRenderVSync(renderer, 0);
 }
 
@@ -46,20 +46,14 @@ void Application::tick() {
 
 void Application::main_loop()
 {
-	while (!window->ShouldClose()) {
+	while (!window->should_close()) {
 		tick();
 	}
 }
 
-void Application::on_event(Event& ev)
+void Application::on_event(const WindowEvent& ev)
 {
-	switch (ev.GetEventType()) {
-	case EventType::KeyPress:
-		KeyPressedEvent& e = dynamic_cast<KeyPressedEvent&>(ev);
-		LOG_INFO("Event info: {0}", e.ToString());
-		
-		break;
-	}
+	LOG_INFO("Event info: {0}", ev.to_string());
 }
 
 void Application::shutdown() {
