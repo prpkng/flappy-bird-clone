@@ -1,9 +1,12 @@
 #include "app/application.hpp"
 #include "math/vector2.hpp"
+#include "math/rect2.hpp"
 
 #include "ecs/events/key_events.hpp"
 #include "ecs/components/transform.hpp"
 #include "ecs/components/sprite.hpp"
+#include "ecs/components/physics.hpp"
+#include "ecs/components/player.hpp"
 
 #include "TestScene.hpp"
 #include <SDL3/SDL.h>
@@ -73,6 +76,9 @@ void TestScene::enter()
 		const auto entity = registry.create();
         Vector2 pos((i % 10) * 40.0f, SDL_floorf(i / 10.f) * 40.0f);
 		registry.emplace<Transform>(entity, pos, Vector2::ONE, 0.0f);
+        registry.emplace<PhysicsObject>(entity);
+        registry.emplace<CollisionShape>(entity, Rect2(4, 4, 24, 24));
+        registry.emplace<Player>(entity);
         //auto clr = SDL_HSVToRGB(i * 2.55f, 1.f, 1.f);
 		//registry.emplace<color>(entity, clr.r, clr.g, clr.b, clr.a);
         registry.emplace<Sprite>(entity, texture);
@@ -91,6 +97,7 @@ void TestScene::render(float delta)
 	SDL_RenderClear(renderer);
 
     render_system.render(renderer, registry);
+    physics_system.debug_render(renderer, registry);
 }
 
 void TestScene::on_event(const WindowEvent& event)

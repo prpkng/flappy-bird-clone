@@ -11,5 +11,5 @@ struct PhysicsObject {
 
 struct CollisionShape {
 	Rect2 bounding_box;
-	Color debug_color;
+	Color debug_color = Color::RED;
 };

@@ -141,3 +141,70 @@ inline constexpr Vector2 Vector2::UP = { 0, -1 };
 inline constexpr Vector2 Vector2::DOWN = { 0, 1 };
 inline constexpr Vector2 Vector2::ONE = { 1, 1 };
 inline constexpr Vector2 Vector2::ZERO = { 0, 0 };
+
+
+
+
+#pragma region === Operators ===
+
+constexpr Vector2 Vector2::operator+(const Vector2& v) const
+{
+	return Vector2(x + v.x, y + v.y);
+}
+
+constexpr void Vector2::operator+=(const Vector2& v)
+{
+	x += v.x; y += v.y;
+}
+
+constexpr Vector2 Vector2::operator-(const Vector2& v) const
+{
+	return Vector2(x - v.x, y - v.y);
+}
+
+constexpr void Vector2::operator-=(const Vector2& v)
+{
+	x -= v.x; y -= v.y;
+}
+
+constexpr Vector2 Vector2::operator*(const Vector2& v) const
+{
+	return Vector2(x * v.x, y * v.y);
+}
+
+constexpr Vector2 Vector2::operator*(float rvalue) const
+{
+	return Vector2(x * rvalue, y * rvalue);
+}
+
+constexpr void Vector2::operator*=(float rvalue)
+{
+	x *= rvalue; y *= rvalue;
+}
+
+constexpr Vector2 Vector2::operator/(const Vector2& v) const
+{
+	return Vector2(x / v.x, y / v.y);
+}
+
+constexpr Vector2 Vector2::operator/(float rvalue) const
+{
+	return Vector2(x / rvalue, y / rvalue);
+}
+
+constexpr void Vector2::operator/=(float rvalue)
+{
+	x /= rvalue; y /= rvalue;
+}
+
+constexpr bool Vector2::operator==(const Vector2& v) const
+{
+	return x == v.x && y == v.y;
+}
+
+constexpr bool Vector2::operator!=(const Vector2& v) const
+{
+	return x != v.x || y != v.y;
+}
+
+#pragma endregion

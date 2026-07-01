@@ -29,6 +29,6 @@ private:
 	SceneStager scene_stager;
 	std::unique_ptr<Window> window;
 
-	SDL_Renderer* renderer;
+	SDL_Renderer* renderer = nullptr;
 };
 

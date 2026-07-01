@@ -142,6 +142,7 @@
     <ClCompile Include="src\math\vector2.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\ecs\components\player.hpp" />
     <ClInclude Include="src\ecs\systems\physics_system.hpp" />
     <ClInclude Include="src\ecs\components\sprite.hpp" />
     <ClInclude Include="src\ecs\components\transform.hpp" />
