@@ -49,7 +49,7 @@ void PlayerSystem::update(float delta, entt::registry& registry, entt::dispatche
 		// Prevent out of bounds
 		trans.position.y = CLAMP(trans.position.y, 0, 255);
 
-		//trans.set_rotation_degrees(obj.velocity.y/4.0f);
+		trans.set_rotation_degrees(obj.velocity.y/4.0f);
 	}
 
 

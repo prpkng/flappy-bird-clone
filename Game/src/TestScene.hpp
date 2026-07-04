@@ -2,6 +2,7 @@
 #include <scenes/scene.hpp>
 #include <ecs/systems/render_system.hpp>
 #include <ecs/systems/physics_system.hpp>
+#include <math/vector2.hpp>
 
 #include "systems/player_system.hpp"
 
@@ -26,7 +27,6 @@ private:
 	PhysicsSystem physics_system;
 	PlayerSystem player_system;
 
-	struct SDL_Texture* target_texture;
 	bool debug_draw;
 };
 

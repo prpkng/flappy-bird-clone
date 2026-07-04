@@ -1,3 +1,5 @@
+#include "TestScene.hpp"
+
 #include "app/application.hpp"
 #include "math/vector2.hpp"
 #include "math/rect2.hpp"
@@ -14,7 +16,6 @@
 
 #include "game_settings.hpp"
 
-#include "TestScene.hpp"
 #include <SDL3/SDL.h>
 
 #include <random>
@@ -29,16 +30,11 @@ void TestScene::enter()
 
     auto renderer = application->get_renderer();
 
-    target_texture = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA32, SDL_TEXTUREACCESS_TARGET, tex_size.x, tex_size.y);
-    SDL_SetTextureScaleMode(target_texture, SDL_SCALEMODE_PIXELART);
-    SDL_SetRenderTarget(renderer, target_texture);
     SDL_SetRenderLogicalPresentation(
         renderer,
         144, 256,
         SDL_LOGICAL_PRESENTATION_LETTERBOX
     );
-    SDL_SetRenderTarget(renderer, NULL);
-
 
 
 	registry.clear();
@@ -73,6 +69,7 @@ void TestScene::enter()
         surface = SDL_LoadPNG("assets/background.png");
         texture = SDL_CreateTextureFromSurface(application->get_renderer(), surface);
         SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_NEAREST);
+        SDL_DestroySurface(surface);
 
         const auto bg = registry.create();
         registry.emplace<Transform>(bg);
@@ -95,7 +92,6 @@ void TestScene::render(float delta)
     auto& window = application->get_window();
 	auto renderer = application->get_renderer();
 
-    SDL_SetRenderTarget(renderer, target_texture);
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
@@ -103,12 +99,6 @@ void TestScene::render(float delta)
     if (debug_draw)
         physics_system.debug_render(renderer, registry);
 
-    SDL_SetRenderTarget(renderer, NULL);
-
-    SDL_FRect src{0, 0, 0, 0};
-    SDL_GetTextureSize(target_texture, &src.w, &src.h);
-    SDL_FRect dst{0, 0, window->size().width, window->size().height };
-    SDL_RenderTexture(renderer, target_texture, &src, &dst);
 }
 
 void TestScene::on_event(const WindowEvent& event)
