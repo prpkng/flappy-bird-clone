@@ -8,7 +8,7 @@ Window::Window(int width, int height, std::string title) : width(width), height(
 		throw std::exception("Failed to init SDL3!");
 
 
-	window_handle = SDL_CreateWindow(title.c_str(), width, height, 0);
+	window_handle = SDL_CreateWindow(title.c_str(), width, height, SDL_WINDOW_RESIZABLE);
 
 	if (window_handle == nullptr)
 		throw std::exception("Failed to create SDL window");
