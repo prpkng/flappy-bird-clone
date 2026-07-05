@@ -1,24 +1,33 @@
-#include "physics_system.hpp"
+#include "ecs/systems/physics_plugin.hpp"
 
 #include "ecs/components/transform.hpp"
 #include "ecs/components/physics.hpp"
 #include "ecs/components/player.hpp"
+#include "ecs/world.hpp"
+#include "ecs/system_scheduler.hpp"
+#include "app/timer.hpp"
 
 #include <SDL3/SDL.h>
+#include "physics_plugin.hpp"
 
-void PhysicsSystem::update(float delta, entt::registry& registry)
+static void update(World& world)
 {
+	entt::registry& registry = world.registry;
 	for (auto &&[entity, trans, obj] : 
 		registry.view<Transform, const PhysicsObject>().each())
 	{
-		trans.position += obj.velocity * delta;
+		trans.position += obj.velocity * Timer::dt();
 	}
 
 }
 
-void PhysicsSystem::debug_render(SDL_Renderer* renderer, entt::registry& registry)
+static void debug_render(World& world)
 {
-
+	entt::registry& registry = world.registry;
+	if (!registry.ctx().contains<PhysicsDebugSettings>() ||
+		registry.ctx().get<PhysicsDebugSettings>().enabled == false) return;
+	
+	SDL_Renderer* renderer = registry.ctx().get<SDL_Renderer*>();
 	auto view = registry.view<const Transform, const CollisionShape>();
 	for (auto &&[entity, trans, shape] : view.each()) {
 
@@ -39,3 +48,8 @@ void PhysicsSystem::debug_render(SDL_Renderer* renderer, entt::registry& registr
 	}
 }
 
+void PhysicsPlugin::setup(World& world)
+{
+	world.scheduler->add_system(Schedule::Update, &update);
+	world.scheduler->add_system(Schedule::Render, &debug_render);
+}

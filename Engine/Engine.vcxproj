@@ -138,7 +138,7 @@
   <ItemGroup>
     <ClCompile Include="src\app\timer.cpp" />
     <ClCompile Include="src\ecs\components\sprite.cpp" />
-    <ClCompile Include="src\ecs\systems\physics_system.cpp" />
+    <ClCompile Include="src\ecs\systems\physics_plugin.cpp" />
     <ClCompile Include="src\ecs\components\physics.hpp" />
     <ClCompile Include="src\ecs\systems\render_system.cpp" />
     <ClCompile Include="src\app\window_events.cpp" />
@@ -165,7 +165,7 @@
     <ClInclude Include="src\ecs\system_scheduler.hpp" />
     <ClInclude Include="src\ecs\world.hpp" />
     <ClInclude Include="src\ecs\events\base_event.hpp" />
-    <ClInclude Include="src\ecs\systems\physics_system.hpp" />
+    <ClInclude Include="src\ecs\systems\physics_plugin.hpp" />
     <ClInclude Include="src\ecs\components\sprite.hpp" />
     <ClInclude Include="src\ecs\components\transform.hpp" />
     <ClInclude Include="src\ecs\systems\render_system.hpp" />

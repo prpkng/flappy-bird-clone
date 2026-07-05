@@ -2,6 +2,7 @@
 
 #include <ecs/world.hpp>
 #include <ecs/system_scheduler.hpp>
+#include <ecs/systems/physics_plugin.hpp>
 
 #include "app/application.hpp"
 #include "math/vector2.hpp"
@@ -85,15 +86,18 @@ void TestScene::enter()
         world.registry.emplace<Parallax>(bg, 10.0f);
     }
 
+    world.registry.ctx().emplace<SDL_Renderer*>(renderer);
+    world.registry.ctx().emplace<PhysicsDebugSettings>(PhysicsDebugSettings{false});
+
     pipe_system.setup(renderer, dispatcher);
 
     world.with_plugin<ParallaxPlugin>();
+    world.with_plugin<PhysicsPlugin>();
     world.initialize();
 }
 
 void TestScene::update(float delta)
 {
-    physics_system.update(delta, world.registry);
     player_system.update(delta, world.registry, dispatcher);
     pipe_system.update(delta, world.registry, dispatcher);
 
@@ -109,8 +113,6 @@ void TestScene::render(float delta)
     SDL_RenderClear(renderer);
 
     render_system.render(renderer, world.registry);
-    if (debug_draw)
-        physics_system.debug_render(renderer, world.registry);
 
     world.render(delta);
 }
@@ -119,10 +121,14 @@ void TestScene::on_event(const WindowEvent& event)
 {
     switch (event.type) {
     case EventType::KeyPress: 
-        dispatcher.trigger(KeyDownEvent { world.registry, event.key.physical_code, event.key.key_code });
+    {
+        dispatcher.trigger(KeyDownEvent{ world.registry, event.key.physical_code, event.key.key_code });
 
-        if (event.key.physical_code == PhysicalKeyCode::D) debug_draw = !debug_draw;
+        if (event.key.physical_code != PhysicalKeyCode::D) break;
+        auto& settings = world.registry.ctx().get<PhysicsDebugSettings>();
+        settings.enabled = !settings.enabled;
         break;
+    }
     case EventType::KeyRelease: 
         dispatcher.trigger(KeyUpEvent { world.registry, event.key.physical_code, event.key.key_code });
         break;

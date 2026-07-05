@@ -1,7 +1,6 @@
 #pragma once
 #include <scenes/scene.hpp>
 #include <ecs/systems/render_system.hpp>
-#include <ecs/systems/physics_system.hpp>
 #include <ecs/world.hpp>
 #include <math/vector2.hpp>
 
@@ -26,7 +25,6 @@ private:
 	World world;
 
 	RenderSystem render_system;
-	PhysicsSystem physics_system;
 	PlayerSystem player_system;
 	PipeSystem pipe_system;
 

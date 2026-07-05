@@ -54,7 +54,7 @@
     <ClCompile Include="src\math\rect2.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\ecs\systems\physics_system.cpp">
+    <ClCompile Include="src\ecs\systems\physics_plugin.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\math\conversions.cpp">
@@ -131,7 +131,7 @@
     <ClInclude Include="src\math\rect2.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\ecs\systems\physics_system.hpp">
+    <ClInclude Include="src\ecs\systems\physics_plugin.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\math\color.hpp">
