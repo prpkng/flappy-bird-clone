@@ -140,6 +140,9 @@
     <ClInclude Include="src\ecs\events\base_event.hpp">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="vendor\include\xoshiro.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="vendor\SDL3.dll" />

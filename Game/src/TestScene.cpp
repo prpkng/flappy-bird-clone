@@ -79,12 +79,15 @@ void TestScene::enter()
         spr.texture_region = Rect2(Vector2::ZERO, VIEWPORT_SIZE);
         registry.emplace<Parallax>(bg, 10.0f);
     }
+
+    pipe_system.setup(renderer, dispatcher);
 }
 
 void TestScene::update(float delta)
 {
     physics_system.update(delta, registry);
     player_system.update(delta, registry, dispatcher);
+    pipe_system.update(delta, registry, dispatcher);
 }
 
 void TestScene::render(float delta)

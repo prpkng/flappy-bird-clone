@@ -68,7 +68,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>$(ProjectDir)vendor\include;$(ProjectDir)src</AdditionalIncludeDirectories>
     </ClCompile>
@@ -108,7 +108,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>$(ProjectDir)vendor\include;$(ProjectDir)src</AdditionalIncludeDirectories>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -178,6 +178,7 @@
     <ClInclude Include="src\scenes\scene_stager.hpp" />
     <ClInclude Include="src\app\window.hpp" />
     <ClInclude Include="src\math\vector2.hpp" />
+    <ClInclude Include="vendor\include\xoshiro.h" />
   </ItemGroup>
   <ItemGroup>
     <CopyFileToFolders Include="vendor\SDL3.dll">

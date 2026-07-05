@@ -19,8 +19,8 @@ void PhysicsSystem::update(float delta, entt::registry& registry)
 void PhysicsSystem::debug_render(SDL_Renderer* renderer, entt::registry& registry)
 {
 
-	auto view = registry.view<const Transform, const PhysicsObject, const CollisionShape>();
-	for (auto &&[entity, trans, physobj, shape] : view.each()) {
+	auto view = registry.view<const Transform, const CollisionShape>();
+	for (auto &&[entity, trans, shape] : view.each()) {
 
 		SDL_SetRenderDrawColorFloat(renderer, 
 			shape.debug_color.r, 

@@ -51,3 +51,48 @@ bool Rect2::is_same(const Rect2& other) const
 {
     return false;
 }
+
+Rect2 Rect2::grown(float amount) const
+{
+	Rect2 other = *this;
+	other.grow_by(amount);
+	return other;
+}
+
+Rect2 Rect2::grow_side(Side side, float amount) const
+{
+	Rect2 other = *this;
+	switch (side) {
+	case Side::Left:
+		other.x -= amount;
+		other.width += amount;
+		break;
+	case Side::Right:
+		other.width += amount;
+		break;
+	case Side::Top:
+		other.y -= amount;
+		other.height += amount;
+		break;
+	case Side::Bottom:
+		other.height += amount;
+		break;
+	}
+	return other;
+}
+
+Rect2 Rect2::grow_individual(float left, float right, float top, float bottom) const
+{
+	Rect2 other = *this;
+	other.x -= left;
+	other.width += left + right; 
+	other.y -= top; 
+	other.height += top + bottom; 
+	return other;
+}
+
+void Rect2::grow_by(float amount)
+{
+	position -= Vector2::ONE*amount;
+	size += Vector2::ONE*2*amount;
+}

@@ -110,7 +110,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>$(ProjectDir)src</AdditionalIncludeDirectories>
     </ClCompile>
@@ -133,7 +133,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <LanguageStandard>stdcpp20</LanguageStandard>
+      <LanguageStandard>stdcpplatest</LanguageStandard>
       <AdditionalOptions>/utf-8 %(AdditionalOptions)</AdditionalOptions>
       <AdditionalIncludeDirectories>$(ProjectDir)src</AdditionalIncludeDirectories>
     </ClCompile>
@@ -155,13 +155,16 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\systems\pipe_system.cpp" />
     <ClCompile Include="src\systems\player_system.cpp" />
     <ClCompile Include="src\TestScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\components\parallax.hpp" />
     <ClInclude Include="src\components\pipe.hpp" />
+    <ClInclude Include="src\events\spawn_pipe_event.hpp" />
     <ClInclude Include="src\game_settings.hpp" />
+    <ClInclude Include="src\systems\pipe_system.hpp" />
     <ClInclude Include="src\systems\player_system.hpp" />
     <ClInclude Include="src\TestScene.hpp" />
   </ItemGroup>

@@ -9,9 +9,10 @@
 #include <ecs/components/physics.hpp>
 #include <math/math.hpp>
 #include <Log.hpp>
+#include "pipe_system.hpp"
 
 
-const float JUMP_FORCE = 155.0f;
+const float JUMP_FORCE = 135.0f;
 const float GRAVITY = 80.0f;
 const float MAX_FALL_SPEED = 180.0f;
 
@@ -37,7 +38,6 @@ void PlayerSystem::update(float delta, entt::registry& registry, entt::dispatche
 		sprite.texture_region.value().x += parallax.speed * delta;
 
 		auto rect = sprite.texture_region.value();
-		LOG_INFO("({}, {}, {}, {})", rect.x, rect.y, rect.width, rect.height);
 	}
 
 	for (auto&& [entity, obj, trans] :

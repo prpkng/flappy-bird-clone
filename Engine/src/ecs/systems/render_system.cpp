@@ -26,18 +26,17 @@ static void sdl_render_wrap_workaround(
 	Vector2 accumulated_pos(0, 0);
 	Vector2 cur_pos(Math::fmod(src.x, texture_w), Math::fmod(src.y, texture_h));
 	Vector2 remaining_size(src.width, src.height);
-	if (!wrap) remaining_size = Vector2(texture_w, texture_h);
+	if (!wrap) remaining_size = remaining_size.min(Vector2(texture_w, texture_h));
 	while (remaining_size.y > 0) {
-		Vector2 remainder(0, texture_h - cur_pos.y);
+		Vector2 remainder(0, MIN(remaining_size.y, texture_h - cur_pos.y));
 		cur_pos.x = Math::fmod(src.x, texture_w);
 		accumulated_pos.x = 0;
 		remaining_size.x = src.width;
 		while (remaining_size.x > 0) {
-			LOG_INFO("Remaining {}", remaining_size.x);
 			remainder.x = MIN(remaining_size.x, texture_w - cur_pos.x);
 
 			Rect2 src(cur_pos, remainder);
-			Rect2 dst(position + accumulated_pos, remainder);
+			Rect2 dst(position + accumulated_pos, remainder * scale);
 
 			SDL_FRect sdl_src = Conversions::to_sdl_rect(src);
 			SDL_FRect sdl_dst = Conversions::to_sdl_rect(dst);
@@ -59,7 +58,8 @@ void RenderSystem::render(SDL_Renderer* renderer, entt::registry& registry)
 	});
 
 	auto sprites_view = registry.view<const Transform, const Renderable, const Sprite>();
-	for (auto &&[entity, transform, renderable, sprite]: sprites_view.each()) {
+	sprites_view.use<Renderable>();
+	for (auto&& [entity, transform, renderable, sprite] : sprites_view.each()) {
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 
 		if (sprite.texture_handle == nullptr)
@@ -83,13 +83,17 @@ void RenderSystem::render(SDL_Renderer* renderer, entt::registry& registry)
 
 		// Replace with switch maybe?
 		auto mode = sprite.wrap_mode == TextureWrapMode::Wrap ? SDL_TEXTURE_ADDRESS_WRAP : SDL_TEXTURE_ADDRESS_CLAMP;
-		SDL_SetTextureColorModFloat(sprite.texture_handle, 
+		SDL_SetTextureColorModFloat(sprite.texture_handle,
 			renderable.modulation.r, renderable.modulation.g, renderable.modulation.b);
 		SDL_SetTextureAlphaModFloat(sprite.texture_handle, renderable.modulation.a);
 
 		Vector2 rotation_pivot = dst_rect.size * sprite.pivot;
 		SDL_FPoint sdl_pivot{ rotation_pivot.x, rotation_pivot.y };
-		
+
+		int flip_bit = SDL_FLIP_NONE;
+		if (sprite.flip_h) flip_bit |= SDL_FLIP_HORIZONTAL;
+		if (sprite.flip_v) flip_bit |= SDL_FLIP_VERTICAL;
+
 		sdl_render_wrap_workaround(
 			renderer,
 			sprite.texture_handle,
@@ -98,7 +102,7 @@ void RenderSystem::render(SDL_Renderer* renderer, entt::registry& registry)
 			transform.scale,
 			transform.get_rotation_degrees(),
 			&sdl_pivot,
-			SDL_FLIP_NONE,
+			(SDL_FlipMode)flip_bit,
 			sprite.wrap_mode == TextureWrapMode::Wrap);
 	}
 }

@@ -62,6 +62,7 @@ struct [[nodiscard]] Rect2 {
 	Rect2 grown(float amount) const;
 	Rect2 grow_side(Side side, float amount) const;
 	Rect2 grow_individual(float left, float right, float top, float bottom) const;
+	void grow_by(float amount);
 
 	Rect2 expand(const Vector2& point) const;
 	void expand_to(const Vector2& point);
@@ -71,7 +72,6 @@ struct [[nodiscard]] Rect2 {
 	
 	std::string to_string() const;
 	
-	void grow_by(float amount);
 
 
 };

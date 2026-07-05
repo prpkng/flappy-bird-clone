@@ -5,6 +5,7 @@
 #include <math/vector2.hpp>
 
 #include "systems/player_system.hpp"
+#include "systems/pipe_system.hpp"
 
 #include <entt/entt.hpp>
 
@@ -26,6 +27,7 @@ private:
 	RenderSystem render_system;
 	PhysicsSystem physics_system;
 	PlayerSystem player_system;
+	PipeSystem pipe_system;
 
 	bool debug_draw;
 };
