@@ -5,7 +5,6 @@
 
 #include <SDL3/SDL.h>
 
-
 Application::Application() : scene_stager(this)
 {
 }
@@ -28,16 +27,14 @@ void Application::initialize(const AppConfig& config)
 void Application::tick() {
 	window->update();
 
-	static uint64_t lastTicks = 0;
-	uint64_t ticks = SDL_GetTicks();
-	float delta = (ticks - lastTicks) / 1000.0;
-	lastTicks = ticks;
+	Timer::instance()->update();
+
 	//TODO improved timing class
 
 
-	scene_stager.update(delta);
+	scene_stager.update(Timer::dt());
 
-	scene_stager.render(delta);
+	scene_stager.render(Timer::dt());
 
 
 	SDL_RenderPresent(renderer);

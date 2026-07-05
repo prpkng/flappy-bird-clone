@@ -155,6 +155,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\main.cpp" />
+    <ClCompile Include="src\systems\parallax_system.cpp" />
     <ClCompile Include="src\systems\pipe_system.cpp" />
     <ClCompile Include="src\systems\player_system.cpp" />
     <ClCompile Include="src\TestScene.cpp" />
@@ -164,6 +165,7 @@
     <ClInclude Include="src\components\pipe.hpp" />
     <ClInclude Include="src\events\spawn_pipe_event.hpp" />
     <ClInclude Include="src\game_settings.hpp" />
+    <ClInclude Include="src\systems\parallax_system.hpp" />
     <ClInclude Include="src\systems\pipe_system.hpp" />
     <ClInclude Include="src\systems\player_system.hpp" />
     <ClInclude Include="src\TestScene.hpp" />

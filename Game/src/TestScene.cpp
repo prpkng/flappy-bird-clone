@@ -1,5 +1,8 @@
 #include "TestScene.hpp"
 
+#include <ecs/world.hpp>
+#include <ecs/system_scheduler.hpp>
+
 #include "app/application.hpp"
 #include "math/vector2.hpp"
 #include "math/rect2.hpp"
@@ -11,6 +14,7 @@
 #include "ecs/components/player.hpp"
 #include "ecs/components/renderable.hpp"
 
+#include "systems/parallax_system.hpp"
 #include "components/parallax.hpp"
 
 
@@ -22,6 +26,7 @@
 
 void TestScene::enter()
 {
+
     auto& window = application->get_window();
     float aspect = window->size().aspect();
     Vector2 tex_size(VIEWPORT_SIZE.y * aspect, VIEWPORT_SIZE.y);
@@ -37,7 +42,7 @@ void TestScene::enter()
     );
 
 
-	registry.clear();
+	world.registry.clear();
 
     auto surface = SDL_LoadPNG("assets/bird1.png");
     auto texture = SDL_CreateTextureFromSurface(application->get_renderer(), surface);
@@ -46,18 +51,18 @@ void TestScene::enter()
 
     SDL_DestroySurface(surface);
 
-    registry.ctx().emplace<GameSettings>();
+    world.registry.ctx().emplace<GameSettings>();
 
     {
         // Create player
-        const auto player_entity = registry.create();
-        registry.emplace<Transform>(player_entity, VIEWPORT_SIZE / 2.0f, Vector2::ONE, 0.0f);
-        registry.emplace<PhysicsObject>(player_entity);
-        registry.emplace<CollisionShape>(player_entity, Rect2(-4, -4, 8, 8));
+        const auto player_entity = world.registry.create();
+        world.registry.emplace<Transform>(player_entity, VIEWPORT_SIZE / 2.0f, Vector2::ONE, 0.0f);
+        world.registry.emplace<PhysicsObject>(player_entity);
+        world.registry.emplace<CollisionShape>(player_entity, Rect2(-4, -4, 8, 8));
 
-        registry.emplace<Player>(player_entity);
+        world.registry.emplace<Player>(player_entity);
 
-        auto& spr = registry.emplace<Sprite>(player_entity, texture);
+        auto& spr = world.registry.emplace<Sprite>(player_entity, texture);
         spr.pivot = Vector2(0.5f, 0.5f);
         spr.texture_region = Rect2(0, 0, 32, 32);
 
@@ -71,23 +76,28 @@ void TestScene::enter()
         SDL_SetTextureScaleMode(texture, SDL_SCALEMODE_NEAREST);
         SDL_DestroySurface(surface);
 
-        const auto bg = registry.create();
-        registry.emplace<Transform>(bg);
-        registry.emplace<Renderable>(bg, -10);
-        auto& spr = registry.emplace<Sprite>(bg, texture);
+        const auto bg = world.registry.create();
+        world.registry.emplace<Transform>(bg);
+        world.registry.emplace<Renderable>(bg, -10);
+        auto& spr = world.registry.emplace<Sprite>(bg, texture);
         spr.wrap_mode = TextureWrapMode::Wrap;
         spr.texture_region = Rect2(Vector2::ZERO, VIEWPORT_SIZE);
-        registry.emplace<Parallax>(bg, 10.0f);
+        world.registry.emplace<Parallax>(bg, 10.0f);
     }
 
     pipe_system.setup(renderer, dispatcher);
+
+    world.with_plugin<ParallaxPlugin>();
+    world.initialize();
 }
 
 void TestScene::update(float delta)
 {
-    physics_system.update(delta, registry);
-    player_system.update(delta, registry, dispatcher);
-    pipe_system.update(delta, registry, dispatcher);
+    physics_system.update(delta, world.registry);
+    player_system.update(delta, world.registry, dispatcher);
+    pipe_system.update(delta, world.registry, dispatcher);
+
+    world.update(delta);
 }
 
 void TestScene::render(float delta)
@@ -98,27 +108,29 @@ void TestScene::render(float delta)
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
-    render_system.render(renderer, registry);
+    render_system.render(renderer, world.registry);
     if (debug_draw)
-        physics_system.debug_render(renderer, registry);
+        physics_system.debug_render(renderer, world.registry);
 
+    world.render(delta);
 }
 
 void TestScene::on_event(const WindowEvent& event)
 {
     switch (event.type) {
     case EventType::KeyPress: 
-        dispatcher.trigger(KeyDownEvent { registry, event.key.physical_code, event.key.key_code });
+        dispatcher.trigger(KeyDownEvent { world.registry, event.key.physical_code, event.key.key_code });
 
         if (event.key.physical_code == PhysicalKeyCode::D) debug_draw = !debug_draw;
         break;
     case EventType::KeyRelease: 
-        dispatcher.trigger(KeyUpEvent { registry, event.key.physical_code, event.key.key_code });
+        dispatcher.trigger(KeyUpEvent { world.registry, event.key.physical_code, event.key.key_code });
         break;
     }
 }
 
 void TestScene::exit()
 {
-	registry.clear();
+    world.cleanup();
+	world.registry.clear();
 }

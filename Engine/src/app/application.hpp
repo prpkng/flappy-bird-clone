@@ -1,6 +1,7 @@
 #pragma once
 
 #include "app/window.hpp"
+#include "app/timer.hpp"
 #include "scenes/scene_stager.hpp"
 
 #include <memory>

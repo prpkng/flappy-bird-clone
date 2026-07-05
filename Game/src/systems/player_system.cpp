@@ -29,16 +29,6 @@ void PlayerSystem::on_key_down(const KeyDownEvent& event)
 
 void PlayerSystem::update(float delta, entt::registry& registry, entt::dispatcher& dispatcher)
 {
-	//TODO move this outta here
-
-	for (auto&& [entity, sprite, parallax] :
-		registry.view<Sprite, const Parallax>().each()) {
-		if (!sprite.texture_region.has_value()) continue;
-
-		sprite.texture_region.value().x += parallax.speed * delta;
-
-		auto rect = sprite.texture_region.value();
-	}
 
 	for (auto&& [entity, obj, trans] :
 		registry.view<PhysicsObject, Transform, const Player>().each())

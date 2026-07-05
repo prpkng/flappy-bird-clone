@@ -2,6 +2,7 @@
 #include <scenes/scene.hpp>
 #include <ecs/systems/render_system.hpp>
 #include <ecs/systems/physics_system.hpp>
+#include <ecs/world.hpp>
 #include <math/vector2.hpp>
 
 #include "systems/player_system.hpp"
@@ -21,8 +22,8 @@ public:
 	virtual void exit() override;
 
 private:
-	entt::registry registry;
 	entt::dispatcher dispatcher;
+	World world;
 
 	RenderSystem render_system;
 	PhysicsSystem physics_system;
