@@ -1,12 +1,25 @@
-#include "ecs/systems/render_system.hpp"
+#include "ecs/systems/render_plugin.hpp"
 
 #include "ecs/components/transform.hpp"
 #include "ecs/components/sprite.hpp"
 #include "ecs/components/renderable.hpp"
+#include "ecs/world.hpp"
+#include "ecs/system_scheduler.hpp"
 
 #include "math/conversions.hpp"
 
 #include <SDL3/SDL.h>
+
+static void render_sprites(World& world);
+
+
+void RenderPlugin::setup(World& world)
+{
+	world.scheduler->add_system(Schedule::PreRender, render_sprites);
+}
+
+
+
 
 
 static void sdl_render_wrap_workaround(
@@ -51,8 +64,11 @@ static void sdl_render_wrap_workaround(
 	}
 }
 
-void RenderSystem::render(SDL_Renderer* renderer, entt::registry& registry)
+static void render_sprites(World& world)
 {
+	auto& registry = world.registry;
+	auto renderer = registry.ctx().get<SDL_Renderer*>();
+
 	registry.sort<Renderable>([](const Renderable& lhs, const Renderable& rhs) {
 		return lhs.z_order < rhs.z_order;
 	});
@@ -104,5 +120,9 @@ void RenderSystem::render(SDL_Renderer* renderer, entt::registry& registry)
 			&sdl_pivot,
 			(SDL_FlipMode)flip_bit,
 			sprite.wrap_mode == TextureWrapMode::Wrap);
-	}
+	};
 }
+
+
+
+

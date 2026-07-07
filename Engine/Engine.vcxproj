@@ -22,14 +22,14 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <CharacterSet>MultiByte</CharacterSet>
     <UseDynamicDebugging>true</UseDynamicDebugging>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
     <ConfigurationType>StaticLibrary</ConfigurationType>
     <UseDebugLibraries>false</UseDebugLibraries>
-    <PlatformToolset>v143</PlatformToolset>
+    <PlatformToolset>v145</PlatformToolset>
     <WholeProgramOptimization>true</WholeProgramOptimization>
     <CharacterSet>MultiByte</CharacterSet>
     <UseDynamicDebugging>true</UseDynamicDebugging>
@@ -140,7 +140,7 @@
     <ClCompile Include="src\ecs\components\sprite.cpp" />
     <ClCompile Include="src\ecs\systems\physics_plugin.cpp" />
     <ClCompile Include="src\ecs\components\physics.hpp" />
-    <ClCompile Include="src\ecs\systems\render_system.cpp" />
+    <ClCompile Include="src\ecs\systems\render_plugin.cpp" />
     <ClCompile Include="src\app\window_events.cpp" />
     <ClCompile Include="src\app\application.cpp" />
     <ClCompile Include="src\app\keys.cpp" />
@@ -162,13 +162,14 @@
     <ClInclude Include="src\ecs\components\player.hpp" />
     <ClInclude Include="src\ecs\components\renderable.hpp" />
     <ClInclude Include="src\ecs\schedules.hpp" />
+    <ClInclude Include="src\ecs\scheduling\callable_traits.hpp" />
     <ClInclude Include="src\ecs\system_scheduler.hpp" />
     <ClInclude Include="src\ecs\world.hpp" />
     <ClInclude Include="src\ecs\events\base_event.hpp" />
     <ClInclude Include="src\ecs\systems\physics_plugin.hpp" />
     <ClInclude Include="src\ecs\components\sprite.hpp" />
     <ClInclude Include="src\ecs\components\transform.hpp" />
-    <ClInclude Include="src\ecs\systems\render_system.hpp" />
+    <ClInclude Include="src\ecs\systems\render_plugin.hpp" />
     <ClInclude Include="src\app\app_builder.hpp" />
     <ClInclude Include="src\app\keys.hpp" />
     <ClInclude Include="src\core\defines.hpp" />

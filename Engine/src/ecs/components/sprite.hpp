@@ -26,8 +26,8 @@ struct Sprite {
 	// ZERO is top left
 	Vector2 pivot = Vector2::ZERO;
 	SpriteScaleMode scale_mode = SpriteScaleMode::Stretch;
-	bool flip_h;
-	bool flip_v;
+	bool flip_h{};
+	bool flip_v{};
 
 
 	static void on_construct(entt::registry& registry, const entt::entity entity);

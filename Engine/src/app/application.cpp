@@ -35,7 +35,7 @@ void Application::tick() {
 	scene_stager.update(Timer::dt());
 
 	scene_stager.render(Timer::dt());
-
+	
 
 	SDL_RenderPresent(renderer);
 }

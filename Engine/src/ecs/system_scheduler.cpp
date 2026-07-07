@@ -24,7 +24,9 @@ void SystemScheduler::fixed_update(World& world)
 
 void SystemScheduler::render(World& world)
 {
+	run_schedule(Schedule::PreRender, world);
 	run_schedule(Schedule::Render, world);
+	run_schedule(Schedule::PostRender, world);
 }
 
 void SystemScheduler::cleanup(World& world)

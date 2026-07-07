@@ -15,6 +15,8 @@ public:
 	World();
 	~World();
 
+	std::vector<Plugin*> plugins;
+
 	SystemScheduler* scheduler;
 	entt::registry registry;
 	entt::dispatcher dispatcher;
@@ -33,8 +35,8 @@ template<typename T>
 requires (IsPlugin<T>)
 inline World& World::with_plugin()
 {
-	T plugin{};
-	plugin.setup(*this);
+	auto* plugin = plugins.emplace_back(new T());
+	plugin->setup(*this);
 
 	return *this;
 }

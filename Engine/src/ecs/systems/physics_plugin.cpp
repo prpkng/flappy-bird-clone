@@ -51,5 +51,5 @@ static void debug_render(World& world)
 void PhysicsPlugin::setup(World& world)
 {
 	world.scheduler->add_system(Schedule::Update, &update);
-	world.scheduler->add_system(Schedule::Render, &debug_render);
+	world.scheduler->add_system(Schedule::PostRender, &debug_render);
 }

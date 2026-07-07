@@ -1,5 +1,7 @@
 #pragma once
 
+#include <ecs/plugin.hpp>
+
 #include <entt/entt.hpp>
 #include <xoshiro.h>
 
@@ -8,18 +10,16 @@ struct SpawnPipeEvent;
 struct SDL_Texture;
 struct SDL_Renderer;
 
-class PipeSystem {
-public:
-	PipeSystem() = default;
-	~PipeSystem() = default;
+struct PipePlugin : public Plugin {
 
-	void setup(SDL_Renderer* renderer, entt::dispatcher& dispatcher);
+	virtual void setup(World& world) override;
+
+private:
 
 	void spawn_pipe(const SpawnPipeEvent& event);
 
-	void update(float delta, entt::registry& registry, entt::dispatcher& dispatcher);
+	void update(World& world);
 
-private:
 	SDL_Texture* pipe_texture;
 	xso::rng rng;
 };

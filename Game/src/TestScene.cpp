@@ -15,8 +15,9 @@
 #include "ecs/components/player.hpp"
 #include "ecs/components/renderable.hpp"
 
-#include "systems/parallax_system.hpp"
 #include "components/parallax.hpp"
+#include "systems/parallax_system.hpp"
+#include "systems/pipe_system.hpp"
 
 
 #include "game_settings.hpp"
@@ -42,8 +43,11 @@ void TestScene::enter()
         SDL_LOGICAL_PRESENTATION_LETTERBOX
     );
 
-
+    
 	world.registry.clear();
+    world.registry.ctx().emplace<GameSettings>();
+    world.registry.ctx().emplace<SDL_Renderer*>(renderer);
+    world.registry.ctx().emplace<PhysicsDebugSettings>(PhysicsDebugSettings{ false });
 
     auto surface = SDL_LoadPNG("assets/bird1.png");
     auto texture = SDL_CreateTextureFromSurface(application->get_renderer(), surface);
@@ -52,7 +56,6 @@ void TestScene::enter()
 
     SDL_DestroySurface(surface);
 
-    world.registry.ctx().emplace<GameSettings>();
 
     {
         // Create player
@@ -67,7 +70,7 @@ void TestScene::enter()
         spr.pivot = Vector2(0.5f, 0.5f);
         spr.texture_region = Rect2(0, 0, 32, 32);
 
-        dispatcher.sink<KeyDownEvent>().connect<&PlayerSystem::on_key_down>(player_system);
+        world.dispatcher.sink<KeyDownEvent>().connect<&PlayerSystem::on_key_down>(player_system);
     }
 
 
@@ -86,20 +89,17 @@ void TestScene::enter()
         world.registry.emplace<Parallax>(bg, 10.0f);
     }
 
-    world.registry.ctx().emplace<SDL_Renderer*>(renderer);
-    world.registry.ctx().emplace<PhysicsDebugSettings>(PhysicsDebugSettings{false});
-
-    pipe_system.setup(renderer, dispatcher);
 
     world.with_plugin<ParallaxPlugin>();
+    world.with_plugin<PipePlugin>();
     world.with_plugin<PhysicsPlugin>();
+    world.with_plugin<RenderPlugin>();
     world.initialize();
 }
 
 void TestScene::update(float delta)
 {
-    player_system.update(delta, world.registry, dispatcher);
-    pipe_system.update(delta, world.registry, dispatcher);
+    player_system.update(delta, world.registry, world.dispatcher);
 
     world.update(delta);
 }
@@ -112,8 +112,6 @@ void TestScene::render(float delta)
     SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
     SDL_RenderClear(renderer);
 
-    render_system.render(renderer, world.registry);
-
     world.render(delta);
 }
 
@@ -122,7 +120,7 @@ void TestScene::on_event(const WindowEvent& event)
     switch (event.type) {
     case EventType::KeyPress: 
     {
-        dispatcher.trigger(KeyDownEvent{ world.registry, event.key.physical_code, event.key.key_code });
+        world.dispatcher.trigger(KeyDownEvent{ world.registry, event.key.physical_code, event.key.key_code });
 
         if (event.key.physical_code != PhysicalKeyCode::D) break;
         auto& settings = world.registry.ctx().get<PhysicsDebugSettings>();
@@ -130,7 +128,7 @@ void TestScene::on_event(const WindowEvent& event)
         break;
     }
     case EventType::KeyRelease: 
-        dispatcher.trigger(KeyUpEvent { world.registry, event.key.physical_code, event.key.key_code });
+        world.dispatcher.trigger(KeyUpEvent { world.registry, event.key.physical_code, event.key.key_code });
         break;
     }
 }

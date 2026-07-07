@@ -11,7 +11,9 @@ enum class Schedule {
 	FixedUpdate,
 	PostFixedUpdate,
 
+	PreRender,
 	Render,
+	PostRender,
 
 	Cleanup
 };

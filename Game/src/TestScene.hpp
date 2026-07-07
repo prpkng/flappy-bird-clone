@@ -1,11 +1,10 @@
 #pragma once
 #include <scenes/scene.hpp>
-#include <ecs/systems/render_system.hpp>
+#include <ecs/systems/render_plugin.hpp>
 #include <ecs/world.hpp>
 #include <math/vector2.hpp>
 
 #include "systems/player_system.hpp"
-#include "systems/pipe_system.hpp"
 
 #include <entt/entt.hpp>
 
@@ -24,9 +23,7 @@ private:
 	entt::dispatcher dispatcher;
 	World world;
 
-	RenderSystem render_system;
 	PlayerSystem player_system;
-	PipeSystem pipe_system;
 
 	bool debug_draw;
 };

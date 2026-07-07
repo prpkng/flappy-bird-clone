@@ -7,6 +7,8 @@ World::World() {
 
 World::~World() {
 	delete scheduler;
+	for (auto* plugin : plugins)
+		delete plugin;
 }
 
 void World::initialize()

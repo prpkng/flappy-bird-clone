@@ -2,10 +2,13 @@
 #include "events/spawn_pipe_event.hpp"
 #include "components/pipe.hpp"
 
+#include <app/timer.hpp>
 #include <ecs/components/transform.hpp>
 #include <ecs/components/sprite.hpp>
 #include <ecs/components/renderable.hpp>
 #include <ecs/components/physics.hpp>
+#include <ecs/world.hpp>
+#include <ecs/system_scheduler.hpp>
 
 #include <SDL3/SDL.h>
 
@@ -17,9 +20,11 @@ constexpr float SPAWN_FREQUENCY = 4.f;
 constexpr float SPAWN_MIN_Y = OPENING_SIZE+16.f;
 constexpr float SPAWN_MAX_Y = 256-SPAWN_MIN_Y;
 
-void PipeSystem::setup(SDL_Renderer* renderer, entt::dispatcher& dispatcher)
+void PipePlugin::setup(World& world)
 {
-	dispatcher.sink<SpawnPipeEvent>().connect<&PipeSystem::spawn_pipe>(this);
+	world.dispatcher.sink<SpawnPipeEvent>().connect<&PipePlugin::spawn_pipe>(this);
+
+	auto renderer = world.registry.ctx().get<SDL_Renderer*>();
 
 	auto surface = SDL_LoadPNG("assets/pipe.png");
 	pipe_texture = SDL_CreateTextureFromSurface(renderer, surface);
@@ -27,9 +32,11 @@ void PipeSystem::setup(SDL_Renderer* renderer, entt::dispatcher& dispatcher)
 	SDL_SetTextureBlendMode(pipe_texture, SDL_BLENDMODE_BLEND);
 
 	SDL_DestroySurface(surface);
+
+	world.scheduler->add_system(Schedule::Update, this, &PipePlugin::update);
 }
 
-void PipeSystem::spawn_pipe(const SpawnPipeEvent& event)
+void PipePlugin::spawn_pipe(const SpawnPipeEvent& event)
 {
 	LOG_INFO("Spawned pipe");
 	//TODO --- NEXT: pipe collisions and game over (start again)
@@ -63,17 +70,17 @@ void PipeSystem::spawn_pipe(const SpawnPipeEvent& event)
 	}
 }
 
-void PipeSystem::update(float delta, entt::registry& registry, entt::dispatcher& dispatcher) {
+void PipePlugin::update(World& world) {
 	static float counter = 10000;
 
-	counter += delta;
+	counter += Timer::dt();
 	if (counter > SPAWN_FREQUENCY) {
-		dispatcher.trigger(SpawnPipeEvent{ registry });
+		world.dispatcher.trigger(SpawnPipeEvent{ world.registry });
 		counter = 0.0f;
 	}
 
 
-	for (auto&& [entity, transform] : registry.view<Transform, const Pipe>().each()) {
-		transform.position.x -= delta * SCROLLING_SPEED;
+	for (auto&& [entity, transform] : world.registry.view<Transform, const Pipe>().each()) {
+		transform.position.x -= Timer::dt() * SCROLLING_SPEED;
 	}
 }
