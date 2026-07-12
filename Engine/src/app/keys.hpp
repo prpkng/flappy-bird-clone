@@ -1,5 +1,8 @@
 #pragma once
 
+#include "core/defines.hpp"
+
+
 #include <SDL3/SDL_keycode.h>
 #include <SDL3/SDL_scancode.h>
 
@@ -358,7 +361,7 @@ namespace PhysicalKey {
         EndCall = SDL_SCANCODE_ENDCALL, /**< Used for rejecting phone calls. */
     };
 
-    __forceinline static Code from_sdl(SDL_Scancode sdl_keycode) {
+    _FORCE_INLINE_ static Code from_sdl(SDL_Scancode sdl_keycode) {
         return static_cast<Code>(sdl_keycode);
     }
 
@@ -626,7 +629,7 @@ namespace Key {
         RHyper = SDLK_RHYPER,
     };
 
-    __forceinline static Code from_sdl(SDL_Keycode sdl_keycode) {
+    _FORCE_INLINE_ static Code from_sdl(SDL_Keycode sdl_keycode) {
         return static_cast<Code>(sdl_keycode);
     }
 

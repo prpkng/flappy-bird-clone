@@ -1,17 +1,17 @@
 #include "window.hpp"
-
+#include "Log.hpp"
 #include <SDL3/SDL.h>
 
 Window::Window(int width, int height, std::string title) : width(width), height(height), title(title)
 {
 	if (!SDL_Init(SDL_INIT_VIDEO))
-		throw std::exception("Failed to init SDL3!");
+		LOG_FATAL("Failed to init SDL3!");
 
 
 	window_handle = SDL_CreateWindow(title.c_str(), width, height, SDL_WINDOW_RESIZABLE);
 
 	if (window_handle == nullptr)
-		throw std::exception("Failed to create SDL window");
+		LOG_FATAL("Failed to create SDL window");
 }
 
 Window::~Window()

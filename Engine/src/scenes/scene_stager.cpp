@@ -1,10 +1,11 @@
 #include "scenes/scene_stager.hpp"
 
+#include "Log.hpp"
 #include "app/window_events.hpp"
 
 void SceneStager::add_scene(GameStage stage, std::unique_ptr<Scene> scene) {
 	if (scenes.contains(stage)) {
-		throw std::exception("stage already exists!");
+		LOG_FATAL("stage already exists!");
 	}
 	if (scenes.size() == 0) current_stage = stage;
 	scene->application = application;
@@ -15,7 +16,7 @@ void SceneStager::add_scene(GameStage stage, std::unique_ptr<Scene> scene) {
 void SceneStager::change_scene(GameStage next)
 {
 	if (!scenes.contains(next)) {
-		throw std::exception("trying to switch to an unavailable scene!");
+		LOG_FATAL("trying to switch to an unavailable scene!");
 	}
 	get_current_scene()->exit();
 	current_stage = next;
@@ -47,7 +48,7 @@ bool SceneStager::has_current_scene() {
 std::unique_ptr<Scene>& SceneStager::get_current_scene()
 {
 	if (!scenes.contains(current_stage)) {
-		throw std::exception("current scene missing!");
+		LOG_FATAL("current scene missing!");
 	}
 	return scenes.at(current_stage);
 }

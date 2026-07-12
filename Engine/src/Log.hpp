@@ -1,5 +1,7 @@
 #pragma once
 
+#include "core/defines.hpp"
+
 #include <spdlog/spdlog.h>
 
 class Log
@@ -16,7 +18,7 @@ private:
 	std::shared_ptr<spdlog::logger> m_ClientLogger;
 };
 
-#define LOG_FATAL(...)     SPDLOG_LOGGER_CRITICAL(::Log::Instance().GetClientLogger(), __VA_ARGS__); __debugbreak()
+#define LOG_FATAL(...)     SPDLOG_LOGGER_CRITICAL(::Log::Instance().GetClientLogger(), __VA_ARGS__); _DEBUG_BREAK()
 #define LOG_ERROR(...)     SPDLOG_LOGGER_ERROR(::Log::Instance().GetClientLogger(), __VA_ARGS__)
 #define LOG_WARN(...)      SPDLOG_LOGGER_WARN(::Log::Instance().GetClientLogger(), __VA_ARGS__)
 #define LOG_INFO(...)      SPDLOG_LOGGER_INFO(::Log::Instance().GetClientLogger(), __VA_ARGS__)

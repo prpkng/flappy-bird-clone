@@ -17,20 +17,20 @@ Color::Color(const std::string& hex)
     int r = 0, g = 0, b = 0, a = 255;
     switch (str.size()) {
     case 8: // Read alpha 
-        sscanf_s(str.c_str(), "%02x%02x%02x%02x", &r, &g, &b, &a);
+        sscanf(str.c_str(), "%02x%02x%02x%02x", &r, &g, &b, &a);
         break;
     case 6:  // Ignore alpha
-        sscanf_s(str.c_str(), "%02x02x%02x", &r, &g, &b);
+        sscanf(str.c_str(), "%02x02x%02x", &r, &g, &b);
         break;
     case 4: // 4digit Read alpha 
-        sscanf_s(str.c_str(), "%01x%01x%01x%01x", &r, &g, &b, &a);
+        sscanf(str.c_str(), "%01x%01x%01x%01x", &r, &g, &b, &a);
         r += r << 4;
         g += g << 4;
         b += b << 4;
         a += a << 4;
         break;
     case 3:  // 3digit Ignore alpha
-        sscanf_s(str.c_str(), "%01x%01x%01x", &r, &g, &b);
+        sscanf(str.c_str(), "%01x%01x%01x", &r, &g, &b);
         r += r << 4;
         g += g << 4;
         b += b << 4;

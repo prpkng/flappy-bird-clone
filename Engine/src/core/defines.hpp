@@ -7,6 +7,22 @@
 #endif
 
 
+#ifndef NDEBUG
+	#ifdef _WIN32
+		#define _DEBUG_BREAK() __debugbreak()
+	#else
+		#define _DEBUG_BREAK() __asm__ volatile("int3")
+	#endif
+#else
+#define _DEBUG_BREAK() 
+#endif
+
+#ifdef _WIN32
+#define _FORCE_INLINE_ __forceinline
+#else
+#define _FORCE_INLINE_ inline
+#endif
+
 // Allow bypassing [[nodiscard]]
 #ifndef _ALLOW_DISCARD_
 #define _ALLOW_DISCARD_ (void)
