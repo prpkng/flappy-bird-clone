@@ -21,6 +21,15 @@ void Application::initialize(const AppConfig& config)
 	window->set_event_callback([this](const WindowEvent& ev) { on_event(ev); });
 
 	renderer = SDL_CreateRenderer(window->get_handle(), NULL);
+	if (!renderer) {
+        LOG_FATAL("Renderer Creation Failed: {}", SDL_GetError());
+        SDL_DestroyWindow(window->get_handle());
+        SDL_Quit();
+		abort();
+    }
+	SDL_RenderClear(renderer);
+	SDL_RenderPresent(renderer);
+
 	SDL_SetRenderVSync(renderer, 0);
 }
 

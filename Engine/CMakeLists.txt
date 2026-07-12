@@ -84,7 +84,7 @@ add_library(Engine STATIC
     ${SOURCE_FILES}
 )
 
-target_include_directories(Engine PUBLIC vendor/include src)
+target_include_directories(Engine PUBLIC ${PROJECT_SOURCE_DIR}/vendor/include ${PROJECT_SOURCE_DIR}/src)
 
 target_link_directories(Engine PUBLIC "vendor/lib/${OS_LIBDIR}/x64/")
 target_link_libraries(Engine PUBLIC spdlog SDL3)

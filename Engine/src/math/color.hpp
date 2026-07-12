@@ -1,5 +1,6 @@
 #pragma once
 
+#include "core/defines.hpp"
 #include <string>
 
 // Undefine windgi.h TRANSPARENT macro to make room for our transparent color
@@ -38,6 +39,14 @@ struct Color {
 
 		float attr[4];
 	};
+
+	_FORCE_INLINE_ bool operator==(const Color& rhs) const {
+		return rhs.r == r && rhs.g == g && rhs.b == b && rhs.a == a;
+	}
+
+	_FORCE_INLINE_ bool operator!=(const Color& rhs) const {
+		return rhs.r != r || rhs.g != g || rhs.b != b || rhs.a != a;
+	}
 
 };
 
