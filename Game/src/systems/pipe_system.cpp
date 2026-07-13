@@ -36,9 +36,7 @@ void PipePlugin::setup(World& world)
 	SDL_DestroySurface(surface);
 
 	world.scheduler->add_system(Schedule::Update, this, &PipePlugin::update);
-	world.system_dispatcher->subscribe<SpawnPipeEvent>([this](const SpawnPipeEvent& event, World& world) {
-		spawn_pipe(event, world);
-	});
+	world.system_dispatcher->subscribe<SpawnPipeEvent>(this, &PipePlugin::spawn_pipe);
 }
 
 void PipePlugin::spawn_pipe(const SpawnPipeEvent& event, World& world)

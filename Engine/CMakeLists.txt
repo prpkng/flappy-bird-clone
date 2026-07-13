@@ -37,6 +37,9 @@ set(SOURCE_FILES
     src/ecs/events/key_events.hpp
     
     src/ecs/scheduling/callable_traits.hpp
+    src/ecs/scheduling/event_dispatcher.hpp
+    src/ecs/scheduling/event_dispatcher.cpp
+    src/ecs/scheduling/system_runner.hpp
     
     src/ecs/systems/physics_plugin.hpp
     src/ecs/systems/physics_plugin.cpp
