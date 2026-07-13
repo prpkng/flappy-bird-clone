@@ -5,6 +5,7 @@
 
 #include <entt/entt.hpp>
 
+class SystemEventDispatcher;
 class SystemScheduler;
 
 template <typename T>
@@ -18,6 +19,7 @@ public:
 	std::vector<Plugin*> plugins;
 
 	SystemScheduler* scheduler;
+	SystemEventDispatcher* system_dispatcher;
 	entt::registry registry;
 	entt::dispatcher dispatcher;
 

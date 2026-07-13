@@ -1,15 +1,13 @@
 #pragma once
 #include "ecs/world.hpp"
 #include "ecs/scheduling/callable_traits.hpp"
+#include "ecs/scheduling/system_runner.hpp"
 
 #include <entt/entt.hpp>
 
 #include <functional>
 #include <cstdint>
 
-
-template<typename T>
-using component_t = std::remove_reference_t<T>;
 
 class SystemScheduler {
 public:
@@ -34,51 +32,6 @@ private:
 	std::unordered_map<Schedule, std::vector<System>> systems;
 
 };
-
-template <typename List>
-struct system_runner;
-
-template <typename... Components>
-struct system_runner<type_list<Components...>>
-{
-	template <typename Callable>
-	static void run(
-		entt::registry& registry,
-		Callable&& callable
-	) {
-		auto view = registry.template view<component_t<Components>...>();
-
-		for (auto& entity : view)
-		{
-			std::invoke(
-				callable,
-				view.template get<
-					component_t<Components>
-				>(entity)...);
-		}
-	}
-
-	template <typename T, typename Callable>
-	static void run_instance(
-		entt::registry& registry,
-		T* instance,
-		Callable&& callable
-	) {
-		auto view = registry.template view<component_t<Components>...>();
-
-		for (auto& entity : view)
-		{
-			std::invoke(
-				callable,
-				instance,
-				view.template get<
-				component_t<Components>
-				>(entity)...);
-		}
-	}
-};
-
-
 
 template<typename Func>
 inline void SystemScheduler::add_system(Schedule schedule, Func&& func)

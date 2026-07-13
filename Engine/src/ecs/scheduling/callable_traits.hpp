@@ -10,6 +10,17 @@ struct type_list {};
 // type_list utilities
 //------------------------------------------------------------
 
+
+template <typename List>
+struct pop_front;
+
+template <typename T, typename... Ts>
+struct pop_front<type_list<T, Ts...>>
+{
+    using front = T;
+    using type = type_list<Ts...>;
+};
+
 template<typename List>
 struct type_list_size;
 

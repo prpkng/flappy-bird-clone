@@ -1,8 +1,10 @@
 #include "ecs/world.hpp"
 #include <ecs/system_scheduler.hpp>
+#include "ecs/scheduling/event_dispatcher.hpp"
 
 World::World() {
 	scheduler = new SystemScheduler();
+	system_dispatcher = new SystemEventDispatcher(this);
 }
 
 World::~World() {

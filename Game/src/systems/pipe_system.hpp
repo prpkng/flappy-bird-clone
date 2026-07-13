@@ -16,7 +16,7 @@ struct PipePlugin : public Plugin {
 
 private:
 
-	void spawn_pipe(const SpawnPipeEvent& event);
+	void spawn_pipe(const SpawnPipeEvent& event, World& world);
 
 	void update(World& world);
 

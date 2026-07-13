@@ -1,6 +1,8 @@
 #pragma once
 
-#include <ecs/events/base_event.hpp>
+#include <ecs/scheduling/event_dispatcher.hpp>
 
-struct SpawnPipeEvent : public BaseEvent {
+// #include <ecs/events/base_event.hpp>
+
+struct SpawnPipeEvent : public Event {
 };

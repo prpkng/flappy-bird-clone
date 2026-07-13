@@ -9,6 +9,8 @@
 #include <ecs/components/physics.hpp>
 #include <ecs/world.hpp>
 #include <ecs/system_scheduler.hpp>
+#include <ecs/scheduling/event_dispatcher.hpp>
+
 
 #include <SDL3/SDL.h>
 
@@ -22,7 +24,7 @@ constexpr float SPAWN_MAX_Y = 256-SPAWN_MIN_Y;
 
 void PipePlugin::setup(World& world)
 {
-	world.dispatcher.sink<SpawnPipeEvent>().connect<&PipePlugin::spawn_pipe>(this);
+	// world.dispatcher.sink<SpawnPipeEvent>().connect<&PipePlugin::spawn_pipe>(this);
 
 	auto renderer = world.registry.ctx().get<SDL_Renderer*>();
 
@@ -34,10 +36,14 @@ void PipePlugin::setup(World& world)
 	SDL_DestroySurface(surface);
 
 	world.scheduler->add_system(Schedule::Update, this, &PipePlugin::update);
+	world.system_dispatcher->subscribe<SpawnPipeEvent>([this](const SpawnPipeEvent& event, World& world) {
+		spawn_pipe(event, world);
+	});
 }
 
-void PipePlugin::spawn_pipe(const SpawnPipeEvent& event)
+void PipePlugin::spawn_pipe(const SpawnPipeEvent& event, World& world)
 {
+	auto& registry = world.registry;
 	LOG_INFO("Spawned pipe");
 	//TODO --- NEXT: pipe collisions and game over (start again)
 	float y = rng.sample(SPAWN_MIN_Y, SPAWN_MAX_Y);
@@ -48,20 +54,20 @@ void PipePlugin::spawn_pipe(const SpawnPipeEvent& event)
 	float cap_y_positions[2] = { y - OPENING_SIZE/2.0f - 16.f, y + OPENING_SIZE / 2.0f };
 
 	for (int i = 0; i < 2; i++) {
-		auto pipe_collision = entt::handle(event.registry, event.registry.create());
+		auto pipe_collision = entt::handle(registry, registry.create());
 		pipe_collision.emplace<Transform>(Vector2(144.0, y_positions[i]));
 		pipe_collision.emplace<PhysicsObject>();
 		pipe_collision.emplace<CollisionShape>(Rect2(0.0f, 0.0f, 32.0f, y_scales[i]*16.f)
 			.grow_individual(-6, -6, -2, -2));
 		pipe_collision.emplace<Pipe>();
 
-		auto pipe = entt::handle(event.registry, event.registry.create());
+		auto pipe = entt::handle(registry, registry.create());
 		pipe.emplace<Transform>(Vector2(144.0, y_positions[i]), Vector2(1.0f, y_scales[i]));
 		pipe.emplace<Pipe>();
 		pipe.emplace<Renderable>(5);
 		pipe.emplace<Sprite>(pipe_texture, Rect2(0.0, 16.0, 32.0, 16.0));
 
-		auto pipe_cap = entt::handle(event.registry, event.registry.create());
+		auto pipe_cap = entt::handle(registry, registry.create());
 		pipe_cap.emplace<Transform>(Vector2(144.0, cap_y_positions[i]));
 		pipe_cap.emplace<Pipe>();
 		pipe_cap.emplace<Renderable>(6);
@@ -75,7 +81,7 @@ void PipePlugin::update(World& world) {
 
 	counter += Timer::dt();
 	if (counter > SPAWN_FREQUENCY) {
-		world.dispatcher.trigger(SpawnPipeEvent{ world.registry });
+		world.system_dispatcher->dispatch(SpawnPipeEvent{});
 		counter = 0.0f;
 	}
 
