@@ -1,15 +1,15 @@
 #include <gtest/gtest.h>
 
-#include <ecs/scheduling/event_dispatcher.hpp>
+#include <ecs/events/event_dispatcher.hpp>
 
-struct TestEvent : public Event {
+struct TestEvent : public BaseEvent {
     TestEvent(std::string msg) : message(msg) {}
     std::string message{};
 };
 
 TEST(EventTests, EventDispatcherBasic) {
 
-    EventDispatcher dispatcher{};
+    SimpleEventDispatcher dispatcher{};
 
     TestEvent event { std::string("Hello World") };
     std::string str = "OtherValue";

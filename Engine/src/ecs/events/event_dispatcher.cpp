@@ -1,6 +1,6 @@
-#include "ecs/scheduling/event_dispatcher.hpp"
+#include "ecs/events/event_dispatcher.hpp"
 
-void SystemEventDispatcher::dispatch(const Event& event) {
+void SystemEventDispatcher::dispatch(const BaseEvent& event) {
     auto typeIdx = std::type_index(typeid(event));
     auto it = listeners.find(typeIdx);
 
@@ -11,7 +11,7 @@ void SystemEventDispatcher::dispatch(const Event& event) {
     }
 }
 
-void EventDispatcher::dispatch(const Event& event) {
+void SimpleEventDispatcher::dispatch(const BaseEvent& event) {
     auto typeIdx = std::type_index(typeid(event));
     auto it = listeners.find(typeIdx);
 

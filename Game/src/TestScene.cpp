@@ -8,6 +8,7 @@
 #include "math/vector2.hpp"
 #include "math/rect2.hpp"
 
+#include <ecs/events/event_dispatcher.hpp>
 #include "ecs/events/key_events.hpp"
 #include "ecs/components/transform.hpp"
 #include "ecs/components/sprite.hpp"
@@ -18,7 +19,7 @@
 #include "components/parallax.hpp"
 #include "systems/parallax_system.hpp"
 #include "systems/pipe_system.hpp"
-
+#include "systems/player_system.hpp"
 
 #include "game_settings.hpp"
 
@@ -68,7 +69,6 @@ void TestScene::enter()
         spr.pivot = Vector2(0.5f, 0.5f);
         spr.texture_region = Rect2(0, 0, 32, 32);
 
-        world.dispatcher.sink<KeyDownEvent>().connect<&PlayerSystem::on_key_down>(player_system);
     }
 
 
@@ -92,13 +92,12 @@ void TestScene::enter()
     world.with_plugin<PipePlugin>();
     world.with_plugin<PhysicsPlugin>();
     world.with_plugin<RenderPlugin>();
+    world.with_plugin<PlayerPlugin>();
     world.initialize();
 }
 
 void TestScene::update(float delta)
 {
-    player_system.update(delta, world.registry, world.dispatcher);
-
     world.update(delta);
 }
 
@@ -118,7 +117,7 @@ void TestScene::on_event(const WindowEvent& event)
     switch (event.type) {
     case EventType::KeyPress: 
     {
-        world.dispatcher.trigger(KeyDownEvent{ world.registry, event.key.physical_code, event.key.key_code });
+        world.system_dispatcher->dispatch(KeyDownEvent{ event.key.physical_code, event.key.key_code });
 
         if (event.key.physical_code != PhysicalKeyCode::D) break;
         auto& settings = world.registry.ctx().get<PhysicsDebugSettings>();
@@ -126,7 +125,7 @@ void TestScene::on_event(const WindowEvent& event)
         break;
     }
     case EventType::KeyRelease: 
-        world.dispatcher.trigger(KeyUpEvent { world.registry, event.key.physical_code, event.key.key_code });
+        world.system_dispatcher->dispatch(KeyUpEvent { event.key.physical_code, event.key.key_code });
         break;
     }
 }

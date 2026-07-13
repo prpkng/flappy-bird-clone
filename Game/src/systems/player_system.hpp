@@ -1,17 +1,19 @@
 #pragma once
 
+#include <ecs/plugin.hpp>
+
 #include <entt/entt.hpp>
 
 struct KeyDownEvent;
 
-class PlayerSystem {
+class PlayerPlugin : public Plugin{
 public:
+	PlayerPlugin() = default;
+	~PlayerPlugin() = default;
 
-	PlayerSystem() = default;
-	~PlayerSystem() = default;
+	virtual void setup(World& world) override;
 
+	void on_key_down(const KeyDownEvent& event, World& world);
 
-	void on_key_down(const KeyDownEvent& event);
-
-	void update(float delta, entt::registry& registry, entt::dispatcher& dispatcher);
+	void update(World& world);
 };

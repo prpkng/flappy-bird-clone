@@ -1,45 +1,43 @@
 #pragma once
 
+#include "ecs/events/base_event.hpp"
 #include "ecs/scheduling/callable_traits.hpp"
 #include "ecs/scheduling/system_runner.hpp"
 #include "ecs/world.hpp"
 #include <functional>
 #include <typeindex>
 
-struct Event {
-    virtual ~Event() = default; // Default destructor
-};
-
 // Reflection-based simple event dispatcher
-class EventDispatcher {
+class SimpleEventDispatcher {
 public:
-    using Callback = std::function<void(const Event&)>;
+    using Callback = std::function<void(const BaseEvent&)>;
 
     template <typename T>
     void subscribe(std::function<void(const T&)> callback);
 
-    void dispatch(const Event& event);
+    void dispatch(const BaseEvent& event);
 
 private:
     std::unordered_map<std::type_index, std::vector<Callback>> listeners;
 };
 
 template <typename T>
-inline void EventDispatcher::subscribe(std::function<void(const T&)> callback) {
+inline void SimpleEventDispatcher::subscribe(std::function<void(const T&)> callback) {
     auto typeIdx = std::type_index(typeid(T));
 
-    auto wrapper = [callback](const Event& event) {
+    auto wrapper = [callback](const BaseEvent& event) {
         callback(static_cast<const T&>(event));
     };
 
     listeners[typeIdx].push_back(wrapper);
 }
 
+// ECS aware system event dispatcher
 class SystemEventDispatcher {
 public:
     SystemEventDispatcher(World* worldPtr) : world(worldPtr) {}
 
-    using Callback = std::function<void(const Event&, World& world)>;
+    using Callback = std::function<void(const BaseEvent&, World& world)>;
 
     template <typename Ev, typename Func>
     void subscribe(Func&& func);
@@ -47,7 +45,7 @@ public:
     template <typename Ev, typename T, typename Func>
     void subscribe(T* instance, Func&& func);
 
-    void dispatch(const Event& event);
+    void dispatch(const BaseEvent& event);
 
 private:
     World* world;
@@ -72,12 +70,12 @@ inline void SystemEventDispatcher::subscribe(Func&& func) {
 
     if constexpr (std::is_same_v<std::remove_cvref_t<first_type_t<deps_t>>,
                                  World>) {
-        wrapper = [func = std::forward<Func>(func)](const Event& event,
+        wrapper = [func = std::forward<Func>(func)](const BaseEvent& event,
                                                     World& world) {
             std::invoke(func, static_cast<const Ev&>(event), world);
         };
     } else {
-        wrapper = [bind_event](const Event& event, World& world) {
+        wrapper = [bind_event](const BaseEvent& event, World& world) {
             auto bound = bind_event(static_cast<const Ev&>(event));
 
             system_runner<deps_t>::run(world.registry, bound);
@@ -106,12 +104,12 @@ inline void SystemEventDispatcher::subscribe(T* instance, Func&& func) {
 
     if constexpr (std::is_same_v<std::remove_cvref_t<first_type_t<deps_t>>,
                                  World>) {
-        wrapper = [instance, func = std::forward<Func>(func)](const Event& event,
+        wrapper = [instance, func = std::forward<Func>(func)](const BaseEvent& event,
                                                     World& world) {
             std::invoke(func, instance, static_cast<const Ev&>(event), world);
         };
     } else {
-        wrapper = [bind_event](const Event& event, World& world) {
+        wrapper = [bind_event](const BaseEvent& event, World& world) {
             auto bound = bind_event(static_cast<const Ev&>(event));
 
             system_runner<deps_t>::run(world.registry, bound);

@@ -23,8 +23,6 @@ private:
 	entt::dispatcher dispatcher;
 	World world;
 
-	PlayerSystem player_system;
-
 	bool debug_draw;
 };
 

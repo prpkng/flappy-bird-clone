@@ -9,7 +9,7 @@
 #include <ecs/components/physics.hpp>
 #include <ecs/world.hpp>
 #include <ecs/system_scheduler.hpp>
-#include <ecs/scheduling/event_dispatcher.hpp>
+#include <ecs/events/event_dispatcher.hpp>
 
 
 #include <SDL3/SDL.h>
@@ -75,7 +75,7 @@ void PipePlugin::spawn_pipe(const SpawnPipeEvent& event, World& world)
 }
 
 void PipePlugin::update(World& world) {
-	static float counter = 10000;
+	static float counter = SPAWN_FREQUENCY;
 
 	counter += Timer::dt();
 	if (counter > SPAWN_FREQUENCY) {
