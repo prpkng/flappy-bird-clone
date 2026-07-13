@@ -24,8 +24,6 @@
 
 #include <SDL3/SDL.h>
 
-#include <random>
-
 void TestScene::enter()
 {
 
@@ -56,7 +54,7 @@ void TestScene::enter()
 
     SDL_DestroySurface(surface);
 
-
+    
     {
         // Create player
         const auto player_entity = world.registry.create();

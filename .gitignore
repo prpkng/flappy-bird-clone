@@ -25,6 +25,7 @@
 # Build directories
 build/
 build-int/
+out/
 int/
 Build/
 build-*/
