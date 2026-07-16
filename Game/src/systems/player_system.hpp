@@ -14,6 +14,4 @@ public:
 	virtual void setup(World& world) override;
 
 	void on_key_down(const KeyDownEvent& event, World& world);
-
-	void update(World& world);
 };

@@ -2,6 +2,8 @@
 #include "ecs/world.hpp"
 #include "ecs/scheduling/callable_traits.hpp"
 #include "ecs/scheduling/system_runner.hpp"
+#include "ecs/querying/query_building.hpp"
+
 
 #include <entt/entt.hpp>
 
@@ -39,6 +41,7 @@ inline void SystemScheduler::add_system(Schedule schedule, Func&& func)
 	using traits = callable_traits<std::decay_t<Func>>;
 	using args = typename traits::args;
 
+
 	if constexpr (
 		std::is_same_v<
 			std::remove_cvref_t<
@@ -57,14 +60,14 @@ inline void SystemScheduler::add_system(Schedule schedule, Func&& func)
 		return;
 	}
 
-
+	using query = build_query_t<args>;
 	constexpr std::size_t num_args = traits::arity;
 
 	systems[schedule].push_back(
 		[func = std::forward<Func>(func)]
 		(World& world)
 		{
-			system_runner<args>::run(world.registry, func);
+			system_runner<query>::run(world.registry, func);
 		}
 	);
 }
@@ -74,6 +77,7 @@ inline void SystemScheduler::add_system(Schedule schedule, T* instance, Func&& f
 {
 	using traits = callable_traits<std::decay_t<Func>>;
 	using args = typename traits::args;
+
 
 	if constexpr (
 		std::is_same_v<
@@ -93,14 +97,14 @@ inline void SystemScheduler::add_system(Schedule schedule, T* instance, Func&& f
 		return;
 	}
 
-
+	using query = build_query_t<args>;
 	constexpr std::size_t num_args = traits::arity;
 
 	systems[schedule].push_back(
 		[instance, func = std::forward<Func>(func)]
 		(World& world)
 		{
-			system_runner<args>::run_instance(world.registry, instance, func);
+			system_runner<query>::run_instance(world.registry, instance, func);
 		}
 	);
 }
